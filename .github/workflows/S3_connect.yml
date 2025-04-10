@@ -1,44 +1,29 @@
-name: CI - Pull Model from S3 and Run
+name: Upload All Files to S3
 
 on:
   push:
     branches:
-      - main  # or whichever branch you want
+      - main  # or any branch you prefer
 
 jobs:
-  run-ml:
+  upload:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    - name: Checkout code
       uses: actions/checkout@v3
-
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-
-    - name: Install dependencies
-      run: |
-        pip install --upgrade pip
-        pip install -r requirements.txt
 
     - name: Install AWS CLI
       run: |
         sudo apt-get update
         sudo apt-get install -y awscli
 
-    - name: Configure AWS credentials
+    - name: Configure AWS Credentials
       run: |
         aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws configure set region ${{ secrets.AWS_REGION }}
 
-    - name: Download ML model from S3
+    - name: Upload all files to S3
       run: |
-        mkdir models
-        aws s3 cp s3://${{ secrets.S3_BUCKET }}/model.pkl models/model.pkl
-
-    - name: Run prediction
-      run: |
-        python predict.py models/model.pkl
+        aws s3 cp . s3://${{ secrets.S3_BUCKET }}/ --recursive --exclude ".git/*" --exclude ".github/*"
