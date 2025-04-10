@@ -8,9 +8,10 @@ on:
 jobs:
   upload-to-s3:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3  # v3 is the latest stable
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -21,4 +22,4 @@ jobs:
 
       - name: Upload files to S3
         run: |
-          aws s3 sync ./local-folder s3://covidcicds3
+          aws s3 sync . s3://covidcicds3 --exclude ".git/*" --exclude ".github/*"
