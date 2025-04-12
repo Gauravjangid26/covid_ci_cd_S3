@@ -22,4 +22,4 @@ jobs:
 
       - name: Upload files to S3
         run: |
-          aws s3 sync . s3://covidcicds3 --exclude ".git/*" --exclude ".github/*"
+          aws s3 sync . s3://flaskinsurance --exclude ".git/*" --exclude ".github/*"
