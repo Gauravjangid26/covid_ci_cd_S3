@@ -8,6 +8,7 @@ print(df.head())
 print(df.isnull().sum())
 print(df.dtypes)
 
+
 df.dropna(inplace=True)
 
 from sklearn.preprocessing import LabelEncoder
